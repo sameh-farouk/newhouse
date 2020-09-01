@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ object.username }}</h1>
+{% load accounts_extra %}
+<img src='https://www.gravatar.com/avatar/{{ object.email | md5hash }}?s=100&d=robohash'>
+<p>{{ object.first_name }} {{ object.last_name }}</p>
+<p>email: {{ object.email }}</p>
+
+<p>has verified primary email: {{ has_verified_email }}</p>
+
+<p>display name: {{ object.username }}</p>
+<p>first name: {{ object.first_name }}</p>
+<p>last name: {{ object.last_name }}</p>
+
+<p>mobile: {{ object.profile.mobile_number }}</p>
+<p>date joined: {{ object.date_joined }}</p>
+
+
+<a href="{% url 'accounts:profile_edit' %}">edit</a>
+<a href="{% url 'account_set_password' %}">set/change password</a>
+<a href="{% url 'account_email' %}">E-mails Management</a>
+<a href="{% url 'socialaccount_connections' %}">Social Connections </a>
+
+
+{% endblock %}
