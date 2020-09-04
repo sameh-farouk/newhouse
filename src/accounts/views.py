@@ -6,10 +6,10 @@ from django.urls import reverse_lazy
 from django.forms.models import BaseInlineFormSet
 from .forms import ProfileInline
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
-class ProfileView(DetailView):
+class ProfileView(LoginRequiredMixin, DetailView):
     template_name="accounts/profile.html"
     model = get_user_model()
     def get_object(self, queryset=None):
@@ -22,7 +22,7 @@ class ProfileView(DetailView):
         return context
 
 
-class ProfileEdit(UpdateWithInlinesView):
+class ProfileEdit(LoginRequiredMixin, UpdateWithInlinesView):
     model = get_user_model()
     inlines = [ProfileInline]
     fields = ['first_name', 'last_name']

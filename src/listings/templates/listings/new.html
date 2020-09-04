@@ -1,0 +1,41 @@
+{% extends "listings/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<table>
+{{ form|crispy }}
+  {% for formset in inlines %}
+    {{ formset.management_form }}
+    <table>
+        {% for form in formset %}
+        {{ form|crispy }}
+        {% endfor %}
+    </table>
+  {% endfor %}
+
+</table>
+
+<input type="submit" value="save" class="btn btn-success">
+<input type="hidden" name="next" value="{{ next }}">
+</form>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'account_reset_password' %}">Lost password?</a></p>
+
+{% endblock %}

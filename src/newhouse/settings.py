@@ -31,6 +31,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
+    'listings.apps.ListingsConfig',
+    'extra_views',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,14 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'accounts.apps.AccountsConfig',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
+    'smart_selects',
+    'crispy_forms',
 
-    'extra_views',
+
+    
 ]
 
 MIDDLEWARE = [
@@ -135,7 +140,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 # URL to use when referring to static files located in STATIC_ROOT.
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+# URL to use when referring to user uploaded files located in MEDIA_ROOT.
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # The absolute path to the directory where collectstatic will collect static files for deployment.
 # STATIC_ROOT
@@ -214,3 +225,9 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 #}
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 #ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.SignupForm'
+
+# smart select
+USE_DJANGO_JQUERY = True
+#JQUERY_URL = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

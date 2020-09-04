@@ -1,0 +1,20 @@
+{% extends 'listings/base.html' %}
+
+{% block content %}
+<h1>{{ object }}</h1>
+
+<p>By: {{ object.user }}</p>
+<p>Governorate: {{ object.governorate }}</p>
+<p>Destrict: {{ object.destrict }}</p>
+<p>Status: {{ object.get_prop_status_display }}</p>
+<p>Type: {{ object.get_prop_type_display }}</p>
+<p>Price: {{ object.price }} EGP</p>
+<p>Bedrooms: {{ object.number_of_bedrooms }}</p>
+<p>Baths: {{ object.number_of_baths }}</p>
+<p>Floor area: {{ object.square_metre }} sqmt</p>
+<p>Listing date: {{ object.date_created }}</p>
+<p>Last Update: {{ object.date_modified }}</p>
+{% for picture in object.pictures.all %}
+<img src='{{ picture.url.url }}' alt='{{ picture.description }}'>
+{% endfor %}
+{% endblock %}

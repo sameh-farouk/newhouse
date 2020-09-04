@@ -1,0 +1,93 @@
+{% extends 'listings/base.html' %}
+
+{% block content %}
+<h3>{{ list_title }}</h3>
+
+<ul>
+{% for object in object_list %}
+<li data-id="{{ object.id }}"><a href="{{ object.get_absolute_url }}"> {{ object }}</a> <button style="color: black;" class='btn btn-outline-success toggle-button {% if user in object.favorites.all %}btn-success{% endif %}'>toggle fav</button></li>
+<small>by: <a href="{% url 'listings:user_listings' object.user.username %}">{{ object.user }}</a></small>
+{% if object.user == user %} <small><a href="{{ object.get_absolute_url }}/edit">edit</a></small> 
+<small><a href="{{ object.get_absolute_url }}/delete">Delete</a></small> {% endif %} 
+
+{% endfor %}
+</ul>
+<script>
+/* const conatin api url */
+const API_URL = 'http://localhost:8000/listings/api/toggle_fav';
+
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+/* async function to send data to our server with delete method */
+async function toggleFav(path, data) {
+   
+    const response = await fetch(path, {
+        method: 'POST',
+        mode: 'same-origin',  // Do not send CSRF token to another domain.
+
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    });
+    return await response.json();
+}
+
+
+/* async function to update user interface with a message from the server */
+async function updateUI(data) {
+    if (data['liked']) {
+        document.querySelector(`[data-id="${data.id}"] > button`).classList.add("btn-success");
+    } else {
+        document.querySelector(`[data-id="${data.id}"] > button`).classList.remove("btn-success");
+    }
+}
+
+
+
+
+/* main function to run when page loaded */
+function main() {
+    /* get all html elements with class 'toggle-button */
+    const toggleButton = document.querySelectorAll('.toggle-button');
+
+    /* Attach event listenr to each button to invoke when user click it */
+    toggleButton.forEach((button) => {
+        button.addEventListener('click', toggleHnad);
+    });
+
+    /* function to run when user click a delete button */
+    function toggleHnad(ev) {
+
+        /* create object contain the data we need to send it to server api */
+        const serverData = {
+            id: ev.target.parentElement.dataset.id,
+        }
+
+        /* call this functio with api url and data to invoke async fetch and set a callback function to run when server respond */
+        toggleFav(API_URL, serverData).then((data) => {
+            updateUI(data);
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', main);
+</script>
+{% endblock %}

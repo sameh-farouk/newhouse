@@ -23,5 +23,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('accounts/', include('accounts.urls'))
-]
+    path('accounts/', include('accounts.urls')),
+    path('listings/', include('listings.urls')),
+    path('chaining/', include('smart_selects.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
