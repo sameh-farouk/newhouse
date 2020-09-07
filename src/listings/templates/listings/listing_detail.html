@@ -10,8 +10,8 @@
             {% if user.is_authenticated %}
             {% if object.user != user %}
             <span style="color: blue;" data-id="{{ object.id }}"
-                class="btn toggle-button card-link {% if user in object.favorites.all %}btn-warning{% else %} btn-outline-secondary{% endif %}">Add to favorite <i
-                    class="fi-xwluxm-star-wide"></i></span>
+                class="btn toggle-button card-link {% if user in object.favorites.all %}btn-warning{% else %} btn-outline-secondary{% endif %}">Add
+                to favorite <i class="fi-xwluxm-star-wide"></i></span>
             {% elif object.user == user %}
             <a href="{{ object.get_absolute_url }}/edit" class="card-link"><i class="fi-xnsuxx-edit-solid"></i></a>
             <a href="{{ object.get_absolute_url }}/delete" class="card-link"><i class="fi-xnsuxx-trash-bin"></i></a>
@@ -19,15 +19,14 @@
             {% endif %}
         </span>
     </div>
-    <div id="carouselExampleCaptions" style="max-width: 700px; height: auto;" class="carousel slide shadow-lg p-3 mb-5 bg-white mx-auto"
-        data-ride="carousel">
+    <div id="carouselExampleCaptions" style="max-width: 700px; height: auto;"
+        class="carousel slide shadow-lg p-3 mb-5 bg-white mx-auto" data-ride="carousel">
         <ol class="carousel-indicators">
             {% for picture in object.pictures.all %}
             <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}
                 class="active" {% endif %}></li>
             {% empty %}
-            <li data-target="#carouselExampleCaptions" data-slide-to="0" 
-                class="active"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
             {% endfor %}
         </ol>
         <div class="carousel-inner">
@@ -113,7 +112,7 @@
                     <h3 class="">{{ object.square_metre }}</h3>
                 </li>
                 <li class="list-group-item flex-fill text-center"><img src="{% static 'img/window.svg' %}" width="40px">
-                    <h3 class="">{{object.propty.number_of_balconies| default:"Unknown"}}</h3>
+                    <h3 class="">{{object.propty.number_of_balconies| default:"_"}}</h3>
                 </li>
             </ul>
 
@@ -121,33 +120,33 @@
 
                 <li class="list-group-item flex-fill text-center">
                     <h5>level</h5>
-                    <h4 class="">{{object.propty.level | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.level | default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>payment</h5>
-                    <h4 class="">{{object.propty.get_payment_method_display | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.get_payment_method_display | default:"_"}}</h4>
                 </li>
             </ul>
             <ul class="list-group list-group-horizontal justify-content-center">
 
                 <li class="list-group-item flex-fill text-center">
                     <h5>finish</h5>
-                    <h4 class="">{{object.propty.get_finish_type_display | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.get_finish_type_display | default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>flooring</h5>
-                    <h4 class="">{{object.propty.get_flooring_display | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.get_flooring_display | default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>storeys</h5>
-                    <h4 class="">{{object.propty.get_storeys_display | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.get_storeys_display | default:"_"}}</h4>
                 </li>
             </ul>
             <ul class="list-group list-group-horizontal justify-content-center">
 
                 <li class="list-group-item flex-fill text-center">
                     <h5>view</h5>
-                    <h4 class="">{{object.propty.get_view_display | default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.get_view_display | default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>inside compound</h5>
@@ -158,11 +157,11 @@
 
                 <li class="list-group-item flex-fill text-center">
                     <h5>year built</h5>
-                    <h4 class="">{{object.propty.year_built | default:"unknow"}}</h4>
+                    <h4 class="">{{object.propty.year_built | default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>available from</h5>
-                    <h4 class="">{{object.propty.available_from  |default:"unknown"}}</h4>
+                    <h4 class="">{{object.propty.available_from  |default:"_"}}</h4>
                 </li>
                 <li class="list-group-item flex-fill text-center">
                     <h5>is furnished</h5>
@@ -193,6 +192,9 @@
                     <img src="{% static 'img/cctv.svg' %}" width="40px" class="mr-3" alt="https://placehold.co/60x60">
                     <h4>{{object.propty.has_security_system | yesno:"yes,no,maybe"}}</h4>
                 </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
                 <li class="list-group-item flex-fill text-center">
                     <img src="{% static 'img/intercom.svg' %}" width="40px" alt="https://placehold.co/60x60">
                     <h4>{{object.propty.has_intercom_system | yesno:"yes,no,maybe"}}</h4>
@@ -204,8 +206,9 @@
             </ul>
         </div>
     </div>
-    
+
     <hr>
     <p>Listing date: {{ object.date_created}} </p>
     <p>Last Update: {{ object.date_modified |timesince }} ago</p>
+</div>
     {% endblock %}
