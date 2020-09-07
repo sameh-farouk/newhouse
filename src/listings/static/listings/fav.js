@@ -1,5 +1,6 @@
     /* const conatin api url */
-    const API_URL = 'http://localhost:8000/api/toggle_fav';
+    const DEV = false
+    const API_URL = DEV ? 'http://localhost:8000/api/toggle_fav' : 'https://samehabouelsaad.pythonanywhere.com/api/toggle_fav';
 
 
     function getCookie(name) {
