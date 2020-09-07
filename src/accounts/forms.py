@@ -10,6 +10,12 @@ from extra_views import InlineFormSetFactory
 User = get_user_model()
 from .models import Profile
 
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "username")
+        labels = {"username": "Display name",}
+
 
 class ProfileInline(InlineFormSetFactory):
     model = Profile

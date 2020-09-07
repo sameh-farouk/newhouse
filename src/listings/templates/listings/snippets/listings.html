@@ -1,0 +1,93 @@
+{% load static %}
+{% if list_title %}
+<h4>{{ list_title }}</h4>
+{% else %}
+<h4>Latest</h4>
+{% endif %}
+{% if object_list %}
+<div class="row row-cols-1 row-cols-md-2">
+
+    {% for object in object_list %}
+
+    <div class="col mb-6 mt-4" class="card-img-top">
+        <div class="card h-150">
+            <div class=" card-body text-light"
+                style="background-image: url('{% if object.pictures.first.url.url %}{{ object.pictures.first.url.url }}{% else %}{% static '/img/no_image.jpg' %}{% endif %}'); background-size: cover; opacity: 0.8;">
+                <ul class="list-unstyled" style="text-shadow: 1px 1px 2px black, 0 0 20px black, 0 0 5px darkblue;">
+                    <h5 class="card-title">{{ object.get_prop_status_display }}</h5>
+
+                    <li class="media">
+                        <img src="{% static 'img/sell.svg' %}" width="40px" class="mr-3" alt="property type">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">{{ object.get_prop_type_display }}</h5>
+                        </div>
+                    </li>
+                    <li class="media my-4">
+                        <img src="{% static 'img/pin.svg' %}" width="40px" class="mr-3"
+                            alt="https://placehold.co/60x60">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">{{ object.governorate }}, {{ object.destrict }}</h5>
+                        </div>
+                    </li>
+                    <li class="media">
+                        <img src="{% static 'img/money.svg' %}" width="40px" class="mr-3"
+                            alt="https://placehold.co/60x60">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">{{ object.price }} EGP</h5>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <ul class="list-group list-group-horizontal justify-content-center">
+            <li class="list-group-item flex-fill text-center"><img src="{% static 'img/bedroom.svg' %}" width="40px">
+                <h3 class="">{{ object.number_of_bedrooms }}</h3>
+            </li>
+            <li class="list-group-item flex-fill text-center"><img src="{% static 'img/bathroom.svg' %}" width="40px">
+                <h3 class="">{{ object.number_of_baths }}</h3>
+            </li>
+            <li class="list-group-item flex-fill text-center"><img src="{% static 'img/area.svg' %}" width="40px">
+                <h3 class="">{{ object.square_metre }}</h3>
+            </li>
+        </ul>
+        <div class="card-footer" style="background-color: rgba(255, 255, 255, 1.0)">
+            {% if user.is_authenticated %}
+            {% if object.user != user %}
+            <span data-id="{{ object.id }}"
+                class="btn toggle-button card-link {% if user in object.favorites.all %}btn-warning{% else %} btn-outline-secondary{% endif %}"><i
+                    class="fi-xwluxm-star-wide"></i></span>
+            {% elif object.user == user %}
+            <a href="{{ object.get_absolute_url }}/edit" class="card-link"><i class="fi-xnsuxx-edit-solid"></i></a>
+            <a href="{{ object.get_absolute_url }}/delete" class="card-link"><i class="fi-xnsuxx-trash-bin"></i></a>
+            {% endif %}
+            {% endif %}
+            <a href="{{ object.get_absolute_url }}" class="btn btn-primary float-right">Show Details</a>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% if page_obj.has_previous or page_obj.has_previous %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center mt-4">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page=1">first</a></li>
+        <li class="page-item"><a class="page-link"
+                href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+        {% endif %}
+        <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link"
+                href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% else %}
+<div>
+<p class="text-center font-italic text-monospace">Sorry, but no thing here yet!</p>
+</div>
+{% endif %}

@@ -20,10 +20,11 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    #path("", TemplateView.as_view(template_name="home.html"), name="home"),
+    path('', include('listings.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
-    path('listings/', include('listings.urls')),
+    #path('listings/', include('listings.urls')),
     path('chaining/', include('smart_selects.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ object.username }}</h1>
 {% load accounts_extra %}
-<img src='https://www.gravatar.com/avatar/{{ object.email | md5hash }}?s=100&d=robohash'>
-<p>{{ object.first_name }} {{ object.last_name }}</p>
-<p>email: {{ object.email }}</p>
+<h2 class="text-center mt-3">Profile</h2>
+<div class="profilecard px-5 my-3">
+    <img src='https://www.gravatar.com/avatar/{{ object.email | md5hash }}?s=100&d=robohash' style="max-width:200px">
+    <br>
+    <h5 class="text-primary">{{ object.username }}</h5>
+    <p class="title text-">{{ object.first_name }} {{ object.last_name }}</p>
+    </p>
+    <div class="text-left pt-4">
+    <p>Email: {{ object.email }} {% if has_verified_email %}<span class="badge badge-success">verified</span>{% else %}
+        <span class="badge badge-light">unverified</span>
+        {% endif %}</p><hr>
+    <p>Mobile: {{ object.profile.mobile_number }}</p><hr>
+    <p>Date joined: {{ object.date_joined }}</p>
+    <a href="{% url 'accounts:profile_edit' %}" class="button mb-3">Edit your Profile</a>
+    <h6 class="text-center">Or</h6>
+    <a href="{% url 'listings:index' %}" class="button mb-3">Let's Find You A House!</a>
 
-<p>has verified primary email: {{ has_verified_email }}</p>
+    </div>
 
-<p>display name: {{ object.username }}</p>
-<p>first name: {{ object.first_name }}</p>
-<p>last name: {{ object.last_name }}</p>
-
-<p>mobile: {{ object.profile.mobile_number }}</p>
-<p>date joined: {{ object.date_joined }}</p>
-
-
-<a href="{% url 'accounts:profile_edit' %}">edit</a>
-<a href="{% url 'account_set_password' %}">set/change password</a>
-<a href="{% url 'account_email' %}">E-mails Management</a>
-<a href="{% url 'socialaccount_connections' %}">Social Connections </a>
-
+    
+</div>
+<div class="text-center">
+    <a class="pr-2"  href="{% url 'account_set_password' %}">set/change password</a>
+    <a class="pr-2"  href="{% url 'account_email' %}">E-mails Management</a>
+    <a href="{% url 'socialaccount_connections' %}">Social Connections </a>
+</div>
 
 {% endblock %}

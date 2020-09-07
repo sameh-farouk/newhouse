@@ -1,6 +1,6 @@
 from extra_views import InlineFormSetFactory
-from .models import Picture, Propty, Listing
-from django.forms import ModelForm
+from .models import Picture, Propty, Listing, Destrict, Governorate
+from django import forms
 
 class PictureInline(InlineFormSetFactory):
     model = Picture
@@ -13,11 +13,22 @@ class ProptyInline(InlineFormSetFactory):
     factory_kwargs={'can_delete': False}    
 
 
-class SearchForm(ModelForm):
+class SearchForm(forms.ModelForm):
+    destrict = forms.ModelChoiceField(label="destirct", queryset=Destrict.objects.all(), empty_label="All")
+    governorate = forms.ModelChoiceField(label="governorate", queryset=Governorate.objects.all(), empty_label="All")
+    prop_status = forms.ChoiceField(label="status", choices=[('', 'All')]  + Listing.Status.choices)
+    prop_type = forms.ChoiceField(label="type", choices=[('', 'All')]  + Listing.Type.choices)
 
     class Meta:
         model = Listing
-        fields = ['prop_type', 'prop_status' ,'governorate', 'destrict', 'number_of_bedrooms', 'number_of_baths']
+        fields = ['prop_type', 'prop_status' ,'governorate', 'destrict', 'number_of_bedrooms', 'number_of_baths', 'square_metre', 'price']
+        labels = {
+        "price": "Price [at most..]",
+        "square_metre":"area [at least..]",
+        "prop_type": "property type",
+        "prop_status": "property status"
+        }
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

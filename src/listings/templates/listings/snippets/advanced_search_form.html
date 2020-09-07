@@ -1,0 +1,59 @@
+{% load crispy_forms_tags %}
+<div class="container pt-3">
+<h6>Custom Search</h6>
+<form role="form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <div class="form-row">
+
+
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+
+        {% for field in form.visible_fields %}
+        <div class="form-group col-md-3">
+
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+
+        {% endfor %}
+    </div>
+
+    {% for formset in inlines %}
+    {{ formset.management_form }}
+    {% for form in formset %}
+    <div class="form-row">
+
+
+        {% for hidden in form.hidden_fields %}
+
+        
+
+        {{ hidden }}
+        {% endfor %}
+
+        
+        {% for field in form.visible_fields %}
+        <div class="form-group col-md-3">
+
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% endfor %}
+    </div>
+</div>
+        {% endfor %}
+        {% endfor %}
+        <p><small>- use one or more filters to do powerful search</small></p>
+
+        <input type="submit" value="search" class="btn btn-success">
+        <input type="hidden" name="next" value="{{ next }}">
+</form>
+</div>
+<script>
+
+    document.querySelectorAll('form select, input').forEach((ele) => {
+        ele.classList.add('form-control');
+    })
+</script>

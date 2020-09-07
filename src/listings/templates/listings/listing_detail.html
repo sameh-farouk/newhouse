@@ -1,20 +1,211 @@
-{% extends 'listings/base.html' %}
-
+{% extends 'base.html' %}
+{% load static %}
+{% load listings_extra %}
 {% block content %}
-<h1>{{ object }}</h1>
+<div class="pt-3">
 
-<p>By: {{ object.user }}</p>
-<p>Governorate: {{ object.governorate }}</p>
-<p>Destrict: {{ object.destrict }}</p>
-<p>Status: {{ object.get_prop_status_display }}</p>
-<p>Type: {{ object.get_prop_type_display }}</p>
-<p>Price: {{ object.price }} EGP</p>
-<p>Bedrooms: {{ object.number_of_bedrooms }}</p>
-<p>Baths: {{ object.number_of_baths }}</p>
-<p>Floor area: {{ object.square_metre }} sqmt</p>
-<p>Listing date: {{ object.date_created }}</p>
-<p>Last Update: {{ object.date_modified }}</p>
-{% for picture in object.pictures.all %}
-<img src='{{ picture.url.url }}' alt='{{ picture.description }}'>
-{% endfor %}
-{% endblock %}
+    <div class="d-flex justify-content-between">
+        <h4>Property Details</h4>
+        <span>
+            {% if user.is_authenticated %}
+            {% if object.user != user %}
+            <span style="color: blue;" data-id="{{ object.id }}"
+                class="btn toggle-button card-link {% if user in object.favorites.all %}btn-warning{% else %} btn-outline-secondary{% endif %}">Add to favorite <i
+                    class="fi-xwluxm-star-wide"></i></span>
+            {% elif object.user == user %}
+            <a href="{{ object.get_absolute_url }}/edit" class="card-link"><i class="fi-xnsuxx-edit-solid"></i></a>
+            <a href="{{ object.get_absolute_url }}/delete" class="card-link"><i class="fi-xnsuxx-trash-bin"></i></a>
+            {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    <div id="carouselExampleCaptions" style="max-width: 700px; height: auto;" class="carousel slide shadow-lg p-3 mb-5 bg-white mx-auto"
+        data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for picture in object.pictures.all %}
+            <li data-target="#carouselExampleCaptions" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}
+                class="active" {% endif %}></li>
+            {% empty %}
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" 
+                class="active"></li>
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+
+            {% for picture in object.pictures.all %}
+            {% if forloop.first %}
+            <div class="carousel-item active">
+                <img src="{{ picture.url.url }}" class="d-block w-100" alt="{{ picture.description }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ picture.description }}</h5>
+                </div>
+            </div>
+            {% else %}
+            <div class="carousel-item">
+                <img src="{{ picture.url.url }}" class="d-block w-100" alt="{{ picture.description }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ picture.description }}</h5>
+                </div>
+            </div>
+            {% endif %}
+            {% empty %}
+            <div class="carousel-item active">
+                <img src="{% static '/img/no_image.jpg' %}" class="d-block w-100" alt="No Image Available">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 style="color: black;">No Image Available</h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-6 mt-4" class="card-img-top">
+            <ul class="list-unstyled">
+                <h5 class="card-title"><a
+                        href="{% url 'listings:listing_by_status' object.get_prop_status_display|replacespacewith_ %}">{{ object.get_prop_status_display }}</a>
+                </h5>
+
+                <li class="media">
+                    <img src="{% static 'img/sell.svg' %}" width="40px" class="mr-3" alt="property type">
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{ object.get_prop_type_display }}</h5>
+                    </div>
+                </li>
+                <li class="media my-4">
+                    <img src="{% static 'img/pin.svg' %}" width="40px" class="mr-3" alt="https://placehold.co/60x60">
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{ object.governorate }}, {{ object.destrict }}</h5>
+                    </div>
+                </li>
+                <li class="media">
+                    <img src="{% static 'img/money.svg' %}" width="40px" class="mr-3" alt="https://placehold.co/60x60">
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">{{ object.price }} EGP</h5>
+                    </div>
+                </li>
+                <h5 class="my-4 mb-1">street address:</h5>{{object.propty.street_address | default:"unknown"}}<br />
+                <h5 class="my-4 mb-1">description:</h5>{{object.propty.description |default:"no description"}}<br />
+                <h5 class="my-4 mb-1">Contac Detalis:</h5>{{ object.contact_details |default:"no details"}}<br />
+                <p>By: <a href="{% url 'listings:user_listings' object.user.username %}">{{ object.user }}</a></p>
+
+            </ul>
+
+        </div>
+        <div class="col mb-6 mt-4" class="card-img-top">
+            <ul class="list-group list-group-horizontal justify-content-center">
+                <li class="list-group-item flex-fill text-center"><img src="{% static 'img/bedroom.svg' %}"
+                        width="40px">
+                    <h3 class="">{{ object.number_of_bedrooms }}</h3>
+                </li>
+                <li class="list-group-item flex-fill text-center"><img src="{% static 'img/bathroom.svg' %}"
+                        width="40px">
+                    <h3 class="">{{ object.number_of_baths }}</h3>
+                </li>
+                <li class="list-group-item flex-fill text-center"><img src="{% static 'img/area.svg' %}" width="40px">
+                    <h3 class="">{{ object.square_metre }}</h3>
+                </li>
+                <li class="list-group-item flex-fill text-center"><img src="{% static 'img/window.svg' %}" width="40px">
+                    <h3 class="">{{object.propty.number_of_balconies| default:"Unknown"}}</h3>
+                </li>
+            </ul>
+
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item flex-fill text-center">
+                    <h5>level</h5>
+                    <h4 class="">{{object.propty.level | default:"unknown"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>payment</h5>
+                    <h4 class="">{{object.propty.get_payment_method_display | default:"unknown"}}</h4>
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item flex-fill text-center">
+                    <h5>finish</h5>
+                    <h4 class="">{{object.propty.get_finish_type_display | default:"unknown"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>flooring</h5>
+                    <h4 class="">{{object.propty.get_flooring_display | default:"unknown"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>storeys</h5>
+                    <h4 class="">{{object.propty.get_storeys_display | default:"unknown"}}</h4>
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item flex-fill text-center">
+                    <h5>view</h5>
+                    <h4 class="">{{object.propty.get_view_display | default:"unknown"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>inside compound</h5>
+                    <h4 class="">{{object.propty.in_compound | yesno:"yes,no,maybe"}}</h4>
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item flex-fill text-center">
+                    <h5>year built</h5>
+                    <h4 class="">{{object.propty.year_built | default:"unknow"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>available from</h5>
+                    <h4 class="">{{object.propty.available_from  |default:"unknown"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>is furnished</h5>
+                    <h4 class="">{{object.propty.is_furnished | yesno:"yes,no,maybe"}}</h4>
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+
+                <li class="list-group-item flex-fill text-center">
+                    <h5>central ac</h5>
+                    <h4 class="">{{object.propty.has_central_air_conditioning | yesno:"yes,no,maybe"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <h5>wall ac</h5>
+                    <h4 class="">{{object.propty.has_wall_air_conditioning|yesno:"yes,no,maybe"}}</h4>
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal justify-content-center">
+                <li class="list-group-item flex-fill text-center">
+                    <img src="{% static 'img/elevator.svg' %}" width="40px" alt="https://placehold.co/60x60">
+                    <h4>{{object.propty.has_elevator | yesno:"yes,no,maybe"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <img src="{% static 'img/car.svg' %}" width="40px" alt="https://placehold.co/60x60">
+                    <h4>{{object.propty.has_garage_parking | yesno:"yes,no,maybe"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <img src="{% static 'img/cctv.svg' %}" width="40px" class="mr-3" alt="https://placehold.co/60x60">
+                    <h4>{{object.propty.has_security_system | yesno:"yes,no,maybe"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <img src="{% static 'img/intercom.svg' %}" width="40px" alt="https://placehold.co/60x60">
+                    <h4>{{object.propty.has_intercom_system | yesno:"yes,no,maybe"}}</h4>
+                </li>
+                <li class="list-group-item flex-fill text-center">
+                    <img src="{% static 'img/pool.svg' %}" width="40px" class="mr-3" alt="https://placehold.co/60x60">
+                    <h4>{{object.propty.has_pool | yesno:"yes,no,maybe"}}</h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <hr>
+    <p>Listing date: {{ object.date_created}} </p>
+    <p>Last Update: {{ object.date_modified |timesince }} ago</p>
+    {% endblock %}

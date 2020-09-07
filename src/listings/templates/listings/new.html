@@ -1,25 +1,24 @@
-{% extends "listings/base.html" %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
 {% block content %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+<h4 class="pt-3">Essential information</h4>
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
+{% if form.errors %}
+{% for err in form.errors %}
+<p>{{err}}</p>
+{% endfor %}
 {% endif %}
 
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <table>
 {{ form|crispy }}
+
+<hr>
+<h4>Extra</h4>
+<h6>make sure to upload at least one image for your property, more is better</h6>
   {% for formset in inlines %}
     {{ formset.management_form }}
     <table>

@@ -76,7 +76,8 @@ class Listing(models.Model):
     number_of_bedrooms = models.PositiveSmallIntegerField()
     number_of_baths = models.PositiveSmallIntegerField()
     square_metre = models.PositiveSmallIntegerField()
-
+    contact_details = models.CharField(max_length=50, validators=[MinLengthValidator(
+        11, "contact details length must be greater than 11 characters")])
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -90,18 +91,19 @@ class Listing(models.Model):
     def get_absolute_url(self):
         return reverse("listings:listing_detail", kwargs={"pk": self.pk, "status": normalize(self.get_prop_status_display()),
                                                           "type": normalize(self.get_prop_type_display()),
-                                                          "governorate": self.governorate.name,
-                                                          "destrict": self.destrict.name})
+                                                          "governorate": normalize(self.governorate.name),
+                                                          "destrict": normalize(self.destrict.name)})
 
 
 class Picture(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name='pictures')
+
+    url = models.ImageField(upload_to='uploads/%Y/%m/%d',
+                            validators=[validate_image_file_extension])
     description = models.CharField(
         max_length=20,
         blank=True)
-    url = models.ImageField(upload_to='uploads/%Y/%m/%d',
-                            validators=[validate_image_file_extension])
 
     def __str__(self):
         return f'Picture of listing #{self.listing.id}'
@@ -177,13 +179,13 @@ class Propty(models.Model):
         choices=Storeys.choices, null=True, blank=True)
     flooring = models.IntegerField(
         choices=Flooring.choices, null=True, blank=True)
-    address = models.CharField(max_length=100, blank=True)
+    street_address = models.CharField(max_length=100, blank=True)
     level = models.PositiveSmallIntegerField(null=True, blank=True)
     number_of_balconies = models.PositiveSmallIntegerField(
         null=True, blank=True)
     year_built = models.IntegerField(validators=[MinValueValidator(
         1900), max_value_current_year], null=True, blank=True)
-    available_on = models.DateField(default=datetime.date.today, null=True)
+    available_from = models.DateField(default=datetime.date.today, null=True)
 
     description = models.TextField(validators=[MinLengthValidator(
         100, "ad must be greater than 99 characters")], blank=True)
@@ -195,7 +197,7 @@ class Propty(models.Model):
     has_elevator = models.BooleanField(null=True)
     in_compound = models.BooleanField(null=True)
     has_intercom_system = models.BooleanField(null=True)
-    has_bool = models.BooleanField(null=True)
+    has_pool = models.BooleanField(null=True)
     is_furnished = models.BooleanField(null=True)
 
     def __str__(self):
