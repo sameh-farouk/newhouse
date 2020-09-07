@@ -159,10 +159,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 # MEDIA_ROOT
 
 # email configuration
-EMAIL_HOST_PASSWORD = 'cfeuxfvbfgpmvhvo'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = ''
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'samehvirus@gmail.com'
+EMAIL_HOST_USER = ''
 EMAIL_USE_SSL = True
 
 
@@ -207,13 +207,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-"""
-'APP': {
-          'client_id': '341561953697015',
-          'secret': 'ac2f6d1249ffa7dfe03b608c75c10fe7',
-          'key': ''
-        }
-"""
+
 ACCOUNT_EMAIL_REQUIRED = True
 # SOCIALACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
