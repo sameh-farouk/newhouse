@@ -19,9 +19,6 @@ the second app is listings app, the main app that responsible for show users lis
 - library used in front end includes bootstrap and friconix.
 - fetch api in vanila javaScript used in front end to call json endpoint to togole favourite status for the listings
 - third-party django-library used includes extra-views to manage multible modelform in one page, and -django-smart-select to enable group "chained" models.
-<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.32.44%20PM.png" width="300" height="300">
-
-<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.34.38%20PM.png" width="300" height="300">
 
 <img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.37.38%20PM.png" width="300" height="300">
 
