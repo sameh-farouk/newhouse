@@ -21,14 +21,11 @@ the second app is listings app, the main app that responsible for show users lis
 - third-party django-library used includes extra-views to manage multible modelform in one page, and -django-smart-select to enable group "chained" models.
 <img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.32.44%20PM.png" width="300" height="300">
 
-<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.34.38%20PM.png
-" width="300" height="300">
+<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.34.38%20PM.png" width="300" height="300">
 
-<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.37.38%20PM.png
-" width="300" height="300">
+<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.37.38%20PM.png" width="300" height="300">
 
-<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.38.16%20PM.png
-" width="300" height="300">
+<img src="https://github.com/sameh-farouk/newhouse/raw/master/screenshots/Screen%20Shot%202020-09-08%20at%202.38.16%20PM.png" width="300" height="300">
 
 this is WIP.
 Project Kicked off: august 22, 2020
