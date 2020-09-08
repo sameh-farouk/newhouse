@@ -5,7 +5,7 @@
 
 <img src="https://cdn.pixabay.com/photo/2019/09/25/14/01/house-for-sale-4503756_960_720.jpg" width="300" height="300">
 
-an property listing web application wherein you can post free property listing online for sale or for rent.
+a property listing web application wherein you can post free property listing online and do custom search and filtration within the listing database.
 
 this django project contains two apps, accounts app that responsible for users authorizations operations, like signup, login, logout, reset passwords, edit profile and scocial login using facebook oAuth2 or alternatively facebook connect.
 
